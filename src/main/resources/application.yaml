@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+       - id: sab-exceed-services
+         uri: lb://sab-exceed-services
+         predicates:
+            - Path=/user/test/**		          				
+    discovery:
+      enabled: true
+
+server:
+ port: 9000
+ 
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://registry:8886/eureka
+ 
