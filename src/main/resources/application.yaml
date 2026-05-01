@@ -1,38 +1,11 @@
-env: DEV
 spring:
   application:
     name: gateway
+  # 'config' must be a direct child of 'spring', not 'cloud'
+  config:
+    import: "configserver:http://localhost:8888"
   cloud:
-    gateway:
-      routes:
-        - id: sab-exceed-services
-          uri: lb://sab-exceed-services
-          predicates:
-            - Path=/user/test/**
-          filters:
-            - name: AuthenticationFilter
-            - name: CircuitBreaker
-              args:
-                name: sab-exceed-services
-                fallbackUri: forward:/serviceUnavailableFallback
-    discovery:
-      enabled: true
-
-server:
-  port: 9000
-
-eureka:
-  client:
-    register-with-eureka: false
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      sab-exceed-services:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10000ms # 10 seconds before trying again
-        permittedNumberOfCallsInHalfOpenState: 3
+    config:
+      fail-fast: true
+  profiles:
+    active: DEV
