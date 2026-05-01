@@ -22,6 +22,13 @@ public class AuthenticationFilterGatewayFilterFactory extends AbstractGatewayFil
 	    @Override
 	    public GatewayFilter apply(Config config) {
 	        return (exchange, chain) -> {
+				/*
+				 * String path = exchange.getRequest().getURI().getPath();
+				 * 
+				 * // Skip validation for info endpoint if (path.contains("/app/info")) { return
+				 * chain.filter(exchange); }
+				 */
+	            
 	            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
 	                throw new RuntimeException("Missing Authorization Header");
 	            }
